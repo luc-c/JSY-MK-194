@@ -1,6 +1,6 @@
 #include "jsy-mk-194.h"
 
-JSY_MK_194::JSY_MK_194() {}
+JSY_MK_194::JSY_MK_194(HardwareSerial * pSerial) : serial(pSerial) {}
 
 /*
 fill data from JSY_MK_194
@@ -11,12 +11,12 @@ boolean JSY_MK_194::read() {
 
   // send segment to JSY-MK-194
   for (i = 0; i < 8; i++) {
-    Serial.write(segmentWrite[i]);
+    serial->write(segmentWrite[i]);
   }
 
   i = 0;
   while (Serial.available() && i < 64) {
-    segmentRead[i] = Serial.read();
+    segmentRead[i] = serial->read();
     i++;
   }
   if (i != 61) {
@@ -138,6 +138,6 @@ void JSY_MK_194::changeBitrate(uint16_t newbitrate) {
   delay(1000);
 
   for (i = 0; i < 11; i++) {
-    Serial.write(segment[i]);
+    serial->write(segment[i]);
   }
 }
